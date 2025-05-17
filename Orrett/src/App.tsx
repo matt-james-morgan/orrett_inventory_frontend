@@ -1,22 +1,14 @@
-import './App.css'
-import { Typography, Box } from '@mui/material';
+import "./App.css";
 
 function App() {
-
   return (
-    <div className="App">
-      <Typography variant="h1" component="h2" gutterBottom>
-        Orrett Inventory Tracker
-      </Typography>
-      <div>
-        <Box>
-          <Typography>
-            Total Bins
-          </Typography>
-        </Box>
+    <div className="container py-8">
+      <div className="flex flex-col space-y-6"></div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">Inventory Tracker</h1>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
