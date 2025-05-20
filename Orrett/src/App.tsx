@@ -3,15 +3,22 @@ import Card from "./components/Card";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useGetTotal } from "./queries/getTotalBins";
 import LoadingCard from "./components/LoadingCard";
+import { useEffect } from "react";
+import { useGetTotalInventory } from "./queries/getTotalInventory";
 
 const queryClient = new QueryClient();
 
 function App() {
-  const { data, isLoading } = useGetTotal();
+  const { data: totalBins, isLoading } = useGetTotal();
+  const { data: totalInventory } = useGetTotalInventory();
 
-  // if (isLoading) {
-  //   return <LoadingCard />;
-  // }
+  useEffect(() => {
+    console.log("data", totalBins);
+  }, [totalBins]);
+
+  if (isLoading) {
+    return <LoadingCard />;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -24,11 +31,15 @@ function App() {
         <div className="flex flex-row space-y-6 justify-evenly gap-4">
           <Card
             title="Total Bins"
-            amount={data?.totalBins ? data.totalBins : 0}
+            amount={totalBins?.total_bins ? totalBins.total_bins : 0}
           />
           <Card
             title="Total Items"
-            amount={data?.totalItems ? data.totalItems : 0}
+            amount={
+              totalInventory?.total_inventory
+                ? totalInventory.total_inventory
+                : 0
+            }
           />
           <Card title="Quick Actions" />
         </div>
