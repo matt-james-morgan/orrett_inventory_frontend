@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 interface binRequest {
@@ -14,7 +14,12 @@ const mutateBin = async (req: binRequest) => {
 };
 
 export const useMutBin = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: mutateBin,
+    onSuccess: () => {
+      // This triggers refetching of the bins query
+      queryClient.invalidateQueries({ queryKey: ["GET_BINS_QUERY_KEY"] });
+    },
   });
 };
