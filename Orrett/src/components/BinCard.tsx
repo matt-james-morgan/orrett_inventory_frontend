@@ -3,7 +3,8 @@ import { Button, Box, Typography, Paper } from "@mui/material";
 
 interface Bin {
   id: number;
-  name: string;
+  bin_name: string;
+  description: string;
 }
 
 interface BinCardProps {
@@ -19,9 +20,9 @@ const BinCard = ({ bin, onDelete, onAddItem }: BinCardProps) => {
       className="p-4 flex flex-col justify-between"
       sx={{ minHeight: 150, minWidth: 250 }}
     >
-      <Typography variant="h6">{bin.name}</Typography>
+      <Typography variant="h6">{bin.bin_name}</Typography>
       <Typography variant="body2" color="text.secondary">
-        ID: {bin.id}
+        {bin.description}
       </Typography>
 
       <Box className="flex justify-between mt-4">

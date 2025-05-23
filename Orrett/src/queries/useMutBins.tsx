@@ -3,11 +3,13 @@ import axios from "axios";
 
 interface binRequest {
   bin_name: string;
+  description: string;
 }
 
 const mutateBin = async (req: binRequest) => {
   const response = await axios.post(`http://localhost:8080/createBin`, {
     bin_name: req.bin_name,
+    description: req.description,
   });
 
   return response.data;

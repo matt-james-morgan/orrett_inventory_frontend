@@ -4,6 +4,7 @@ import { useGetTotalInventory } from "../queries/useGetTotalInventory";
 import { Button, Modal, Box, TextField } from "@mui/material";
 import { useMutBin } from "../queries/useMutBins";
 import type { Bin } from "../types";
+import AddBinModal from "./AddBinModal";
 
 interface BinListProps {
   bins: Bin[];
@@ -62,22 +63,7 @@ const Header = ({ bins }: BinListProps) => {
           </Button>
         </div>
       </Card>
-      <Modal
-        open={binModal}
-        onClose={() => setBinModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <TextField
-            id="outlined-basic"
-            label="Bin Name"
-            variant="outlined"
-            onChange={(e) => setBinName(e.target.value)}
-          />
-          <Button onClick={() => handleSubmit()}>submit</Button>
-        </Box>
-      </Modal>
+      <AddBinModal binModal={binModal} setBinModal={setBinModal} />
     </div>
   );
 };
