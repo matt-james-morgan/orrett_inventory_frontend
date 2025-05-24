@@ -20,7 +20,7 @@ function App() {
     <div className="container py-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight pb-12">
-          Inventory Tracker
+          Musical Theatre Inventory
         </h1>
       </div>
       <Header bins={bins} />

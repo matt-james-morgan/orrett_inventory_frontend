@@ -7,7 +7,7 @@ interface binRequest {
 }
 
 const mutateBin = async (req: binRequest) => {
-  const response = await axios.post(`http://localhost:8080/createBin`, {
+  const response = await axios.post(`http://localhost:8080/create/bin`, {
     bin_name: req.bin_name,
     description: req.description,
   });

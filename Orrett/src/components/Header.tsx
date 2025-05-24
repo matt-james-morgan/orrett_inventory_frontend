@@ -1,10 +1,9 @@
-import { useState } from "react";
-import Card from "./Card";
 import { useGetTotalInventory } from "../queries/useGetTotalInventory";
-import { Button, Modal, Box, TextField } from "@mui/material";
 import { useMutBin } from "../queries/useMutBins";
+import { useMutItem } from "@/queries/useMutItem";
 import type { Bin } from "../types";
-import AddBinModal from "./AddBinModal";
+import AddModal from "./AddModal";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface BinListProps {
   bins: Bin[];
@@ -12,58 +11,64 @@ interface BinListProps {
 
 const Header = ({ bins }: BinListProps) => {
   const { data: totalInventory } = useGetTotalInventory();
-  const { mutate } = useMutBin();
-  const [binModal, setBinModal] = useState(false);
-  const [binName, setBinName] = useState("");
+  const { mutate: binMutate } = useMutBin();
+  const { mutate: itemMutate } = useMutItem();
 
-  const handleSubmit = () => {
-    setBinModal(false);
-    mutate({ bin_name: binName });
+  const handleBinSubmit = (name: string, description: string) => {
+    binMutate({ bin_name: name, description });
   };
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
+  const handleItemSubmit = (
+    name: string,
+    description: string,
+    bin_id?: string
+  ) => {
+    itemMutate({ item_name: name, description, bin_id: bin_id || "" });
   };
 
   return (
     <div className="flex gap-4 items-stretch">
-      <Card title="Total Bins" amount={bins ? bins.length : 0}></Card>
-      <Card
-        title="Total Items"
-        amount={
-          totalInventory?.total_inventory ? totalInventory.total_inventory : 0
-        }
-      />
-      <Card title="Quick Actions">
-        <div
-          style={{
-            width: "50%",
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "12px",
-          }}
-        >
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: "#0F1226" }}
-            onClick={() => setBinModal(true)}
-          >
-            Add Bin
-          </Button>
-          <Button variant="contained" sx={{ backgroundColor: "#0F1226" }}>
-            Add Item
-          </Button>
-        </div>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Total Bins</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{bins ? bins.length : 0}</div>
+        </CardContent>
       </Card>
-      <AddBinModal binModal={binModal} setBinModal={setBinModal} />
+
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Total Items</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">
+            {totalInventory?.total_inventory
+              ? totalInventory.total_inventory
+              : 0}
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="w-full ">
+        <CardHeader>
+          <CardTitle>Quick Actions</CardTitle>
+        </CardHeader>
+        <CardContent className="flex gap-4">
+          <AddModal
+            title="Add New Bin"
+            buttonTitle="Add Bin"
+            labelName="Bin Name"
+            handleSubmit={handleBinSubmit}
+          />
+          <AddModal
+            title="Add New Item"
+            buttonTitle="Add Item"
+            labelName="Item Name"
+            handleSubmit={handleItemSubmit}
+            binName={true}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 };
