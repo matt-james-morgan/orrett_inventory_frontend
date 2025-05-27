@@ -10,8 +10,6 @@ import BinCard from "./components/BinCard";
 function App() {
   const { data: bins, isLoading } = useGetBins();
 
-  console.log(bins);
-
   if (isLoading) {
     return <LoadingCard />;
   }
@@ -37,7 +35,6 @@ function App() {
             key={bin.id}
             bin={bin}
             onDelete={(id) => console.log("Delete bin", id)}
-            onAddItem={(id) => console.log("Add item to bin", id)}
           />
         ))}
       </div>

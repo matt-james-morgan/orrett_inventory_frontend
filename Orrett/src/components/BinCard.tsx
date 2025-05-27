@@ -1,38 +1,33 @@
 import React from "react";
 import { Button, Box, Typography, Paper } from "@mui/material";
+import AddItem from "./AddItem";
+import ItemList from "./ItemList";
 
 interface Bin {
   id: number;
-  bin_name: string;
-  description: string;
+  binName?: string;
+  description?: string;
 }
 
 interface BinCardProps {
   bin: Bin;
   onDelete?: (id: number) => void;
-  onAddItem?: (id: number) => void;
 }
 
-const BinCard = ({ bin, onDelete, onAddItem }: BinCardProps) => {
+const BinCard = ({ bin, onDelete }: BinCardProps) => {
   return (
     <Paper
       elevation={3}
       className="p-4 flex flex-col justify-between"
       sx={{ minHeight: 150, minWidth: 250 }}
     >
-      <Typography variant="h6">{bin.bin_name}</Typography>
+      <Typography variant="h6">{bin.binName}</Typography>
       <Typography variant="body2" color="text.secondary">
         {bin.description}
       </Typography>
 
       <Box className="flex justify-between mt-4">
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() => onAddItem?.(bin.id)}
-        >
-          Add Item
-        </Button>
+        <AddItem binName={bin.binName || ""} />
         <Button
           variant="outlined"
           color="error"
@@ -42,6 +37,7 @@ const BinCard = ({ bin, onDelete, onAddItem }: BinCardProps) => {
           Delete
         </Button>
       </Box>
+      <ItemList bin={} />
     </Paper>
   );
 };

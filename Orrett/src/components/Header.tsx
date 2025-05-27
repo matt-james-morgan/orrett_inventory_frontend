@@ -1,4 +1,4 @@
-import { useGetTotalInventory } from "../queries/useGetTotalInventory";
+import { useGetTotalItems } from "../queries/useGetTotalItems";
 import { useMutBin } from "../queries/useMutBins";
 import { useMutItem } from "@/queries/useMutItem";
 import type { Bin } from "../types";
@@ -10,20 +10,20 @@ interface BinListProps {
 }
 
 const Header = ({ bins }: BinListProps) => {
-  const { data: totalInventory } = useGetTotalInventory();
+  const { data: totalItems } = useGetTotalItems();
   const { mutate: binMutate } = useMutBin();
   const { mutate: itemMutate } = useMutItem();
 
   const handleBinSubmit = (name: string, description: string) => {
-    binMutate({ bin_name: name, description });
+    binMutate({ binName: name, description });
   };
 
   const handleItemSubmit = (
     name: string,
     description: string,
-    bin_id?: string
+    binId?: string
   ) => {
-    itemMutate({ item_name: name, description, bin_id: bin_id || "" });
+    itemMutate({ itemName: name, description, binId: binId || "" });
   };
 
   return (
@@ -42,11 +42,7 @@ const Header = ({ bins }: BinListProps) => {
           <CardTitle>Total Items</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {totalInventory?.total_inventory
-              ? totalInventory.total_inventory
-              : 0}
-          </div>
+          <div className="text-2xl font-bold">{totalItems?.totalItems}</div>
         </CardContent>
       </Card>
       <Card className="w-full ">
