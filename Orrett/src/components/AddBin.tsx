@@ -10,29 +10,16 @@ import {
 } from "@/components/ui/Dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useMutBin } from "../queries/useMutBins";
 
-interface AddBinModalProps {
-  handleSubmit: (name: string, description: string, binId?: string) => void;
-  title: string;
-  labelName: string;
-  buttonTitle: string;
-  binName?: boolean;
-}
-
-const AddModal: React.FC<AddBinModalProps> = ({
-  buttonTitle = "Button Title",
-  title = "Title",
-  labelName = "Name",
-  binName,
-  handleSubmit,
-}) => {
+const AddBin = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [binIdentifier, setBinIdentifier] = useState("");
   const [open, setOpen] = useState(false);
-
-  const handleSubmitClick = () => {
-    handleSubmit(name, description, binIdentifier || undefined);
+  const { mutate: binMutate } = useMutBin();
+  const handleBinSubmit = () => {
+    binMutate({ binName: name, description: description });
     setName("");
     setDescription("");
     setBinIdentifier("");
@@ -42,16 +29,16 @@ const AddModal: React.FC<AddBinModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-black text-white">{buttonTitle}</Button>
+        <Button className="bg-black text-white">Add New Bin</Button>
       </DialogTrigger>
       <DialogContent className="bg-white sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle>Bin Name</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              {labelName}
+              Bin Name
             </Label>
             <Input
               id="name"
@@ -74,23 +61,23 @@ const AddModal: React.FC<AddBinModalProps> = ({
             />
           </div>
         </div>
-        {binName && (
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="binIdentifier" className="text-right">
-              Bin Name
-            </Label>
-            <Input
-              onChange={(e) => {
-                setBinIdentifier(e.target.value);
-              }}
-              id="binIdentifier"
-              value={binIdentifier}
-              className="col-span-3"
-            />
-          </div>
-        )}
+
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="binIdentifier" className="text-right">
+            Bin Name
+          </Label>
+          <Input
+            onChange={(e) => {
+              setBinIdentifier(e.target.value);
+            }}
+            id="binIdentifier"
+            value={binIdentifier}
+            className="col-span-3"
+          />
+        </div>
+
         <DialogFooter>
-          <Button type="submit" onClick={handleSubmitClick}>
+          <Button type="submit" onClick={() => handleBinSubmit()}>
             Save changes
           </Button>
         </DialogFooter>
@@ -99,4 +86,4 @@ const AddModal: React.FC<AddBinModalProps> = ({
   );
 };
 
-export default AddModal;
+export default AddBin;

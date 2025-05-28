@@ -1,4 +1,4 @@
-import { Item, Bin } from "@/types";
+import type { Item } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -12,23 +12,21 @@ import {
 // Removed Tooltip imports since you want to avoid extra libraries
 
 interface ItemListProps {
-  bin: Bin;
+  items: Item[];
 }
 
-const ItemList = ({ bin }: ItemListProps) => {
-  const handleDelete = (itemId: string, itemName: string) => {
+const ItemList = ({ items }: ItemListProps) => {
+  const handleDelete = (itemId: number, itemName: string) => {
     // Placeholder delete handler (since useInventoryStore is commented out)
     alert(`Item "${itemName}" (ID: ${itemId}) deleted`);
   };
 
-  if (bin.items.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="p-4 text-center">
         <div className="text-4xl mb-2">📦</div>
         <h2 className="text-lg font-semibold">No items</h2>
-        <p className="text-muted-foreground mb-4">
-          This bin is empty. Add items to "{bin.name}".
-        </p>
+        <p className="text-muted-foreground mb-4">This bin is empty.</p>
         <Button
           onClick={() => {
             alert("Add Item clicked!");
@@ -43,9 +41,7 @@ const ItemList = ({ bin }: ItemListProps) => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">
-          Items in {bin.name}
-        </CardTitle>
+        <CardTitle className="text-lg font-semibold">Items in Bin</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
@@ -57,7 +53,7 @@ const ItemList = ({ bin }: ItemListProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {bin.items.map((item: Item) => (
+            {items.map((item: Item) => (
               <TableRow key={item.id} className="transition hover:bg-muted/50">
                 <TableCell className="font-medium">{item.name}</TableCell>
                 <TableCell>{item.description || "-"}</TableCell>

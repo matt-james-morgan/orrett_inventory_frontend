@@ -4,13 +4,11 @@ import axios from "axios";
 interface ItemRequest {
   itemName: string;
   binId: string;
-  description: string;
 }
 
 const mutateItem = async (req: ItemRequest) => {
   const response = await axios.post(`http://localhost:8080/create/item`, {
     itemName: req.itemName,
-    description: req.description,
     binId: req.binId,
   });
 

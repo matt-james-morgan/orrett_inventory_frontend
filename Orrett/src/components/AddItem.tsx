@@ -24,16 +24,12 @@ const AddItem: React.FC<AddItemModalProps> = ({ binName }) => {
 
   const { mutate: itemMutate } = useMutItem();
 
-  const handleItemSubmit = (
-    name: string,
-    description: string,
-    binId?: string
-  ) => {
-    itemMutate({ itemName: name, description, binId: binId || "" });
+  const handleItemSubmit = (name: string, binId?: string) => {
+    itemMutate({ itemName: name, binId: binId || "" });
   };
 
   const handleSubmitClick = () => {
-    handleItemSubmit(name, description, binName);
+    handleItemSubmit(name, binName);
     setName("");
     setDescription("");
     setOpen(false);
