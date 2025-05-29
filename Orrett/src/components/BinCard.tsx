@@ -21,7 +21,7 @@ const BinCard = ({ bin, onDelete }: BinCardProps) => {
       className="p-4 flex flex-col justify-between gap-4"
       sx={{ minHeight: 150, minWidth: 250 }}
     >
-      <Typography variant="h6">{bin.binName}</Typography>
+      <Typography variant="h6">{bin.name}</Typography>
       <Typography variant="body2" color="text.secondary">
         {bin.description}
       </Typography>
@@ -30,7 +30,7 @@ const BinCard = ({ bin, onDelete }: BinCardProps) => {
       </Typography>
 
       <Box className="flex justify-between mt-4">
-        <AddItem binName={bin.binName || ""} />
+        <AddItem bin={bin || ""} />
         <Button
           variant="outlined"
           color="error"
@@ -40,6 +40,7 @@ const BinCard = ({ bin, onDelete }: BinCardProps) => {
           Delete
         </Button>
       </Box>
+
       {itemsView ? (
         <>
           <ItemList items={bin.items} />

@@ -3,7 +3,7 @@ import axios from "axios";
 
 interface ItemRequest {
   itemName: string;
-  binId: string;
+  binId: number;
 }
 
 const mutateItem = async (req: ItemRequest) => {
@@ -21,7 +21,7 @@ export const useMutItem = () => {
     mutationFn: mutateItem,
     onSuccess: () => {
       // This triggers refetching of the Items query
-      queryClient.invalidateQueries({ queryKey: ["GET_ITEMS_QUERY_KEY"] });
+      queryClient.invalidateQueries({ queryKey: ["GET_BINS_QUERY_KEY"] });
     },
   });
 };

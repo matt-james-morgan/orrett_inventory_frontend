@@ -1,6 +1,6 @@
 export interface Bin {
   id: number;
-  binName?: string;
+  name?: string;
   description?: string;
   items: Item[];
 }

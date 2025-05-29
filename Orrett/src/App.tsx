@@ -1,14 +1,14 @@
 import "./App.css";
 
-import { useGetBins } from "./queries/useGetBins";
 import LoadingCard from "./components/LoadingCard";
 import Header from "./components/Header";
 import type { Bin } from "./types";
 import { TextField } from "@mui/material";
 import BinCard from "./components/BinCard";
+import { useBinContext } from "./context/BinContext";
 
 function App() {
-  const { data: bins, isLoading } = useGetBins();
+  const { bins, isLoading } = useBinContext();
 
   if (isLoading) {
     return <LoadingCard />;

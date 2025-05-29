@@ -8,32 +8,49 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/Dialog";
+import type { Bin } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMutItem } from "@/queries/useMutItem";
+import { useBinContext } from "../context/BinContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 interface AddItemModalProps {
-  binName: string;
+  bin: Bin;
 }
 
-const AddItem: React.FC<AddItemModalProps> = ({ binName }) => {
+const AddItem: React.FC<AddItemModalProps> = ({ bin }) => {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+
+  console.log(name);
+
+  const { bins, isLoading } = useBinContext();
 
   const [open, setOpen] = useState(false);
+  const [binSelect, setBinSelect] = useState(bin?.name || "");
+  const [binId, setBinId] = useState<number | undefined>(bin?.id);
 
   const { mutate: itemMutate } = useMutItem();
 
-  const handleItemSubmit = (name: string, binId?: string) => {
-    itemMutate({ itemName: name, binId: binId || "" });
-  };
-
-  const handleSubmitClick = () => {
-    handleItemSubmit(name, binName);
-    setName("");
-    setDescription("");
+  const handleItemSubmit = () => {
+    if (!binId) {
+      // You can either warn the user or handle the error gracefully
+      console.error("No bin selected");
+      return;
+    }
+    itemMutate({ itemName: name, binId: binId });
     setOpen(false);
   };
+
+  if (isLoading) {
+    return <h1>Loading</h1>;
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -46,24 +63,13 @@ const AddItem: React.FC<AddItemModalProps> = ({ binName }) => {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right"></Label>
+            <Label htmlFor="name" className="text-right">
+              Item Name
+            </Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="binName" className="text-right">
-              Description
-            </Label>
-            <Input
-              onChange={(e) => {
-                setDescription(e.target.value);
-              }}
-              id="binName"
-              value={description}
               className="col-span-3"
             />
           </div>
@@ -72,13 +78,36 @@ const AddItem: React.FC<AddItemModalProps> = ({ binName }) => {
           <Label htmlFor="binIdentifier" className="text-right">
             Bin Name
           </Label>
-          <div className="col-span-3 px-3 py-2 bg-gray-100 rounded border text-sm">
-            {binName || <span className="text-gray-400">No bin name</span>}
+          <div className="col-span-3 px-3 py-2 rounded border text-sm">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <button className="btn">{binSelect || "Select Bin"}</button>
+                  <ChevronDown />
+                </div>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent>
+                {bins.map((bin: Bin) => (
+                  <DropdownMenuItem
+                    key={bin.id}
+                    onClick={() => {
+                      setBinSelect(bin.name ?? "");
+                      setBinId(bin.id!);
+                    }}
+                  >
+                    {bin.name}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
         <DialogFooter>
-          <Button type="submit" onClick={handleSubmitClick}>
+          <Button type="submit" onClick={() => handleItemSubmit()}>
             Save changes
           </Button>
         </DialogFooter>

@@ -1,6 +1,6 @@
 import type { Item } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -17,7 +17,6 @@ interface ItemListProps {
 
 const ItemList = ({ items }: ItemListProps) => {
   const handleDelete = (itemId: number, itemName: string) => {
-    // Placeholder delete handler (since useInventoryStore is commented out)
     alert(`Item "${itemName}" (ID: ${itemId}) deleted`);
   };
 
@@ -40,23 +39,18 @@ const ItemList = ({ items }: ItemListProps) => {
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">Items in Bin</CardTitle>
-      </CardHeader>
       <CardContent className="p-0">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">Delete</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map((item: Item) => (
               <TableRow key={item.id} className="transition hover:bg-muted/50">
                 <TableCell className="font-medium">{item.name}</TableCell>
-                <TableCell>{item.description || "-"}</TableCell>
                 <TableCell className="text-right">
                   <Button
                     variant="ghost"
