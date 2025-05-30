@@ -4,16 +4,22 @@ import AddItem from "./AddItem";
 import ItemList from "./ItemList";
 import { useTheme } from "@mui/material/styles";
 import type { Bin } from "../types";
+import { useDeleteBin } from "@/queries/useMutBins";
 
 interface BinCardProps {
   bin: Bin;
-  onDelete?: (id: number) => void;
 }
 
-const BinCard = ({ bin, onDelete }: BinCardProps) => {
+const BinCard = ({ bin }: BinCardProps) => {
   const theme = useTheme();
 
+  const deleteBin = useDeleteBin();
+
   const [itemsView, setItemsView] = useState(false);
+
+  const handleDelete = (binId: number) => {
+    deleteBin.mutate({ binId: binId });
+  };
 
   return (
     <Paper
@@ -35,7 +41,7 @@ const BinCard = ({ bin, onDelete }: BinCardProps) => {
           variant="outlined"
           color="error"
           size="small"
-          onClick={() => onDelete?.(bin.id)}
+          onClick={() => handleDelete(bin.id)}
         >
           Delete
         </Button>

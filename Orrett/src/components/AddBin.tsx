@@ -10,19 +10,17 @@ import {
 } from "@/components/ui/Dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useMutBin } from "../queries/useMutBins";
+import { useCreateBin } from "../queries/useMutBins";
 
 const AddBin = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [binIdentifier, setBinIdentifier] = useState("");
   const [open, setOpen] = useState(false);
-  const { mutate: binMutate } = useMutBin();
+  const createBin = useCreateBin();
   const handleBinSubmit = () => {
-    binMutate({ binName: name, description: description });
+    createBin.mutate({ binName: name, description: description });
     setName("");
     setDescription("");
-    setBinIdentifier("");
     setOpen(false);
   };
 
@@ -60,20 +58,6 @@ const AddBin = () => {
               className="col-span-3"
             />
           </div>
-        </div>
-
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="binIdentifier" className="text-right">
-            Bin Name
-          </Label>
-          <Input
-            onChange={(e) => {
-              setBinIdentifier(e.target.value);
-            }}
-            id="binIdentifier"
-            value={binIdentifier}
-            className="col-span-3"
-          />
         </div>
 
         <DialogFooter>

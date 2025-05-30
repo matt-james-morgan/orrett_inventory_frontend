@@ -6,21 +6,41 @@ interface ItemRequest {
   binId: number;
 }
 
-const mutateItem = async (req: ItemRequest) => {
+interface DeleteItemRequest {
+  itemId: number;
+}
+
+const createItem = async (req: ItemRequest) => {
   const response = await axios.post(`http://localhost:8080/create/item`, {
     itemName: req.itemName,
     binId: req.binId,
   });
-
   return response.data;
 };
 
-export const useMutItem = () => {
+const deleteItem = async (req: DeleteItemRequest) => {
+  const response = await axios.delete(`http://localhost:8080/delete/item`, {
+    data: { itemId: req.itemId },
+  });
+  return response.data;
+};
+
+export const useCreateItem = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: mutateItem,
+    mutationFn: createItem,
     onSuccess: () => {
-      // This triggers refetching of the Items query
+      // Refetch bins/items after creating an item
+      queryClient.invalidateQueries({ queryKey: ["GET_BINS_QUERY_KEY"] });
+    },
+  });
+};
+
+export const useDeleteItem = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteItem,
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["GET_BINS_QUERY_KEY"] });
     },
   });

@@ -9,15 +9,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// Removed Tooltip imports since you want to avoid extra libraries
-
+import { useDeleteItem } from "@/queries/useMutItem";
 interface ItemListProps {
   items: Item[];
 }
 
 const ItemList = ({ items }: ItemListProps) => {
-  const handleDelete = (itemId: number, itemName: string) => {
-    alert(`Item "${itemName}" (ID: ${itemId}) deleted`);
+  const deleteItem = useDeleteItem();
+  const handleDelete = (itemId: number) => {
+    deleteItem.mutate({ itemId: itemId });
   };
 
   if (items.length === 0) {
@@ -26,13 +26,6 @@ const ItemList = ({ items }: ItemListProps) => {
         <div className="text-4xl mb-2">📦</div>
         <h2 className="text-lg font-semibold">No items</h2>
         <p className="text-muted-foreground mb-4">This bin is empty.</p>
-        <Button
-          onClick={() => {
-            alert("Add Item clicked!");
-          }}
-        >
-          Add Item
-        </Button>
       </div>
     );
   }
@@ -55,7 +48,7 @@ const ItemList = ({ items }: ItemListProps) => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleDelete(item.id, item.name)}
+                    onClick={() => handleDelete(item.id)}
                     className="h-8 w-8 text-destructive hover:text-destructive/90"
                   >
                     🗑️

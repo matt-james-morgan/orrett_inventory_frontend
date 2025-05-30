@@ -11,7 +11,7 @@ import {
 import type { Bin } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useMutItem } from "@/queries/useMutItem";
+import { useCreateItem } from "@/queries/useMutItem";
 import { useBinContext } from "../context/BinContext";
 import {
   DropdownMenu,
@@ -22,7 +22,7 @@ import {
 import { ChevronDown } from "lucide-react";
 
 interface AddItemModalProps {
-  bin: Bin;
+  bin?: Bin;
 }
 
 const AddItem: React.FC<AddItemModalProps> = ({ bin }) => {
@@ -36,7 +36,7 @@ const AddItem: React.FC<AddItemModalProps> = ({ bin }) => {
   const [binSelect, setBinSelect] = useState(bin?.name || "");
   const [binId, setBinId] = useState<number | undefined>(bin?.id);
 
-  const { mutate: itemMutate } = useMutItem();
+  const createItemMutation = useCreateItem();
 
   const handleItemSubmit = () => {
     if (!binId) {
@@ -44,7 +44,7 @@ const AddItem: React.FC<AddItemModalProps> = ({ bin }) => {
       console.error("No bin selected");
       return;
     }
-    itemMutate({ itemName: name, binId: binId });
+    createItemMutation.mutate({ itemName: name, binId: binId });
     setOpen(false);
   };
 

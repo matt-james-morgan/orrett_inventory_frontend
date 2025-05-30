@@ -1,12 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-interface binRequest {
+interface binCreateRequest {
   binName: string;
   description: string;
 }
 
-const mutateBin = async (req: binRequest) => {
+interface binDeleteRequest {
+  binId: number;
+}
+
+const createBin = async (req: binCreateRequest) => {
   const response = await axios.post(`http://localhost:8080/create/bin`, {
     binName: req.binName,
     description: req.description,
@@ -15,10 +19,29 @@ const mutateBin = async (req: binRequest) => {
   return response.data;
 };
 
-export const useMutBin = () => {
+const deleteBin = async (req: binDeleteRequest) => {
+  const response = await axios.post(`http://localhost:8080/delete/bin`, {
+    binId: req.binId,
+  });
+
+  return response.data;
+};
+
+export const useCreateBin = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: mutateBin,
+    mutationFn: createBin,
+    onSuccess: () => {
+      // This triggers refetching of the bins query
+      queryClient.invalidateQueries({ queryKey: ["GET_BINS_QUERY_KEY"] });
+    },
+  });
+};
+
+export const useDeleteBin = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteBin,
     onSuccess: () => {
       // This triggers refetching of the bins query
       queryClient.invalidateQueries({ queryKey: ["GET_BINS_QUERY_KEY"] });
