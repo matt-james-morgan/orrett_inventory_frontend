@@ -1,4 +1,3 @@
-import React from "react";
 import type { ReactNode } from "react";
 import { useGetBins } from "@/queries/useGetBins";
 import { BinContext } from "./BinContext";
