@@ -1,17 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import type { Bin } from "@/types";
 
 const GET_BINS_QUERY_KEY = "GET_BINS_QUERY_KEY";
 
-const getBins = async () => {
-  const response = await axios.get(`http://localhost:8080/bins`);
-
+const getBins = async (): Promise<Bin[]> => {
+  const response = await axios.get("http://localhost:8080/bins");
   return response.data;
 };
 
-export const useGetBins = () => {
+export const useGetBins = (options: { enabled: boolean }) => {
   return useQuery({
     queryKey: [GET_BINS_QUERY_KEY],
     queryFn: getBins,
+    ...options,
   });
 };
