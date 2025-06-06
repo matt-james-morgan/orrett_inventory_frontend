@@ -11,7 +11,7 @@ interface DeleteItemRequest {
 }
 
 const createItem = async (req: ItemRequest) => {
-  const response = await axios.post(`http://localhost:8080/create/item`, {
+  const response = await axios.post(`165.22.225.195/api/create/item`, {
     itemName: req.itemName,
     binId: req.binId,
   });
@@ -19,7 +19,7 @@ const createItem = async (req: ItemRequest) => {
 };
 
 const deleteItem = async (req: DeleteItemRequest) => {
-  const response = await axios.delete(`http://localhost:8080/delete/item`, {
+  const response = await axios.delete(`165.22.225.195/api/delete/item`, {
     data: { itemId: req.itemId },
   });
   return response.data;

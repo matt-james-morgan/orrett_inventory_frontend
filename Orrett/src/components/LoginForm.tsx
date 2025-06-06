@@ -24,7 +24,7 @@ export function LoginForm({
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:8080/signin", {
+    const res = await fetch("165.22.225.195/api/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),

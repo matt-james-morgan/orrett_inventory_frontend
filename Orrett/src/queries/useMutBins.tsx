@@ -11,7 +11,7 @@ interface binDeleteRequest {
 }
 
 const createBin = async (req: binCreateRequest) => {
-  const response = await axios.post(`http://localhost:8080/create/bin`, {
+  const response = await axios.post(`165.22.225.195/api/create/bin`, {
     binName: req.binName,
     description: req.description,
   });
@@ -20,7 +20,7 @@ const createBin = async (req: binCreateRequest) => {
 };
 
 const deleteBin = async (req: binDeleteRequest) => {
-  const response = await axios.post(`http://localhost:8080/delete/bin`, {
+  const response = await axios.post(`165.22.225.195/api/delete/bin`, {
     binId: req.binId,
   });
 

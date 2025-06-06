@@ -5,7 +5,7 @@ import type { Bin } from "@/types";
 const GET_BINS_QUERY_KEY = "GET_BINS_QUERY_KEY";
 
 const getBins = async (): Promise<Bin[]> => {
-  const response = await axios.get("http://localhost:8080/bins");
+  const response = await axios.get("165.22.225.195/api/bins");
   return response.data;
 };
 
