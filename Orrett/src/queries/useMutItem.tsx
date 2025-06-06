@@ -11,23 +11,17 @@ interface DeleteItemRequest {
 }
 
 const createItem = async (req: ItemRequest) => {
-  const response = await axios.post(
-    `http://165.22.225.195:8080/api/create/item`,
-    {
-      itemName: req.itemName,
-      binId: req.binId,
-    }
-  );
+  const response = await axios.post(`http://165.22.225.195/api/create/item`, {
+    itemName: req.itemName,
+    binId: req.binId,
+  });
   return response.data;
 };
 
 const deleteItem = async (req: DeleteItemRequest) => {
-  const response = await axios.delete(
-    `http://165.22.225.195:8080/api/delete/item`,
-    {
-      data: { itemId: req.itemId },
-    }
-  );
+  const response = await axios.delete(`http://165.22.225.195/api/delete/item`, {
+    data: { itemId: req.itemId },
+  });
   return response.data;
 };
 
