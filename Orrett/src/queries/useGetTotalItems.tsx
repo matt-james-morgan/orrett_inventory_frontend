@@ -4,7 +4,7 @@ import axios from "axios";
 const TOTAL_ITEMS_QUERY_KEY = "totalItemsQueryKey";
 
 const getTotalItems = async () => {
-  const response = await axios.get(`165.22.225.195/api/totalItems`);
+  const response = await axios.get(`http://165.22.225.195:8080/api/totalItems`);
   return response.data;
 };
 

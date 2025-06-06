@@ -11,18 +11,24 @@ interface binDeleteRequest {
 }
 
 const createBin = async (req: binCreateRequest) => {
-  const response = await axios.post(`165.22.225.195/api/create/bin`, {
-    binName: req.binName,
-    description: req.description,
-  });
+  const response = await axios.post(
+    `http://165.22.225.195:8080/api/create/bin`,
+    {
+      binName: req.binName,
+      description: req.description,
+    }
+  );
 
   return response.data;
 };
 
 const deleteBin = async (req: binDeleteRequest) => {
-  const response = await axios.post(`165.22.225.195/api/delete/bin`, {
-    binId: req.binId,
-  });
+  const response = await axios.post(
+    `http://165.22.225.195:8080/api/delete/bin`,
+    {
+      binId: req.binId,
+    }
+  );
 
   return response.data;
 };
