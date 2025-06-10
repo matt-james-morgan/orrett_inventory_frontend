@@ -1,13 +1,21 @@
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState(false);
   const [username, setUsername] = useState("");
 
+  const previousLogin = sessionStorage.getItem("loggedIn");
+  useEffect(() => {
+    if (previousLogin == "true") {
+      setAuth(true);
+    }
+  }, []);
+
   const login = (name: string) => {
     setAuth(true);
+    sessionStorage.setItem("loggedIn", "true");
     setUsername(name);
   };
 

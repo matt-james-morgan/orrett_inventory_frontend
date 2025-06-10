@@ -12,7 +12,6 @@ import type { Bin } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCreateItem } from "@/queries/useMutItem";
-import { useBinContext } from "../context/BinContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +19,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import { useGetBins } from "@/queries/useGetBins";
+import { useUserContext } from "@/context/UserContext";
 
 interface AddItemModalProps {
   bin?: Bin;
@@ -28,9 +29,11 @@ interface AddItemModalProps {
 const AddItem: React.FC<AddItemModalProps> = ({ bin }) => {
   const [name, setName] = useState("");
 
-  console.log(name);
+  const { auth } = useUserContext();
 
-  const { bins, isLoading } = useBinContext();
+  const { data: bins = [], isLoading } = useGetBins({
+    enabled: auth,
+  });
 
   const [open, setOpen] = useState(false);
   const [binSelect, setBinSelect] = useState(bin?.name || "");
